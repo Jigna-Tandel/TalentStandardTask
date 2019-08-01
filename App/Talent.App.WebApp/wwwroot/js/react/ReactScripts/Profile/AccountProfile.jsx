@@ -9,11 +9,11 @@ import Skill from './Skill.jsx';
 import Education from './Education.jsx';
 import Certificate from './Certificate.jsx';
 import VisaStatus from './VisaStatus.jsx'
-import PhotoUpload from './PhotoUpload.jsx';
-import VideoUpload from './VideoUpload.jsx';
-import CVUpload from './CVUpload.jsx';
-import SelfIntroduction from './SelfIntroduction.jsx';
-import Experience from './Experience.jsx';
+// import PhotoUpload from './PhotoUpload.jsx';
+// import VideoUpload from './VideoUpload.jsx';
+// import CVUpload from './CVUpload.jsx';
+ import SelfIntroduction from './SelfIntroduction.jsx';
+// import Experience from './Experience.jsx';
 import { BodyWrapper, loaderData } from '../Layout/BodyWrapper.jsx';
 import { LoggedInNavigation } from '../Layout/LoggedInNavigation.jsx';
 import TalentStatus from './TalentStatus.jsx';
@@ -24,7 +24,14 @@ export default class AccountProfile extends React.Component {
 
         this.state = {
             profileData: {
-                address: {},
+                // address: {
+                //     city: "",
+                // country: "",
+                // number: "",
+                // postCode: 0,
+                // street: "",
+                // suburb: ""  
+                // },
                 nationality: '',
                 education: [],
                 languages: [],
@@ -44,6 +51,10 @@ export default class AccountProfile extends React.Component {
                 }
             },
             loaderData: loaderData,
+            formErrors: { name: '', email: '' },
+            nameValid: false,
+            emailValid: false,
+            formValid: true
 
         }
 
@@ -53,6 +64,11 @@ export default class AccountProfile extends React.Component {
         this.saveProfile = this.saveProfile.bind(this)
         this.loadData = this.loadData.bind(this)
         this.init = this.init.bind(this);
+
+        this.handleUserInput = this.handleUserInput.bind(this);
+        this.validateField = this.validateField.bind(this);
+        this.errorClass = this.errorClass.bind(this);
+        this.isFormValid = this.isFormValid.bind(this);
     };
 
     init() {
@@ -64,7 +80,10 @@ export default class AccountProfile extends React.Component {
 
     componentDidMount() {
         this.loadData();
+        console.log('Address in AccountProfile DidMount',this.state.profileData.address)
+        console.log('LinkedIn in AccountProfile DidMount',this.state.profileData.summary)
     }
+    
 
     loadData() {
         var cookies = Cookies.get('talentAuthToken');
@@ -83,6 +102,7 @@ export default class AccountProfile extends React.Component {
     }
     //updates component's state without saving data
     updateWithoutSave(newValues) {
+       
         let newProfile = Object.assign({}, this.state.profileData, newValues)
         this.setState({
             profileData: newProfile
@@ -91,6 +111,7 @@ export default class AccountProfile extends React.Component {
 
     //updates component's state and saves data
     updateAndSaveData(newValues) {
+        
         let newProfile = Object.assign({}, this.state.profileData, newValues)
         this.setState({
             profileData: newProfile
@@ -98,10 +119,13 @@ export default class AccountProfile extends React.Component {
     }
 
     updateForComponentId(componentId, newValues) {
+        console.log('ComponentId',componentId)
+        console.log('newvalues',newValues)
         this.updateAndSaveData(newValues)
     }
 
     saveProfile() {
+        console.log('profile',this.state.profileData)
         var cookies = Cookies.get('talentAuthToken');
         $.ajax({
             url: 'http://localhost:60290/profile/profile/updateTalentProfile',
@@ -120,13 +144,70 @@ export default class AccountProfile extends React.Component {
                 }
 
             }.bind(this),
-            error: function (res, a, b) {
-                console.log(res)
-                console.log(a)
-                console.log(b)
-            }
+            error: function (res) {
+                TalentUtil.notification.show("Error while saving Employer details", "error", null, null);
+            }.bind(this)
+            // error: function (res, a, b) {
+            //     console.log(res)
+            //     console.log(a)
+            //     console.log(b)
+            // }
         })
     }
+
+    handleUserInput(event) {
+
+        const name = event.target.name;
+        const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+        if (event.target.type === 'checkbox') {
+            this.setState({
+                [name]: value
+            })
+        }
+        else {
+            this.setState({
+                [name]: value
+            }, () => { this.validateField(name, value) })
+        }
+    };
+
+    validateField(fieldName, value) {
+        //debugger
+        //console.log("validateField!")
+        let fieldValidationErrors = this.state.formErrors;
+        let emailValid = this.state.emailValid;
+        let nameValid = this.state.nameValid;
+        var formValid = this.state.formValid;
+        switch (fieldName) {
+            case 'email':
+                emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+                fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+                formValid = emailValid != null;
+                break;
+            case 'name':
+                nameValid = value.match('\w');
+                fieldValidationErrors.nameValid = nameValid ? '' : ' is invalid';
+                formValid = nameValid;
+                break;
+            default:
+                break;
+        }
+        this.setState({
+            formErrors: fieldValidationErrors,
+            emailValid: emailValid,
+            nameValid: nameValid,
+            formValid: formValid
+        }, this.validateForm);
+    }
+
+    errorClass(error) {
+        return (error.length === 0 ? false : true);
+    }
+
+    isFormValid() {
+        return this.state.formValid == false ? 'error' : '';
+    }
+
 
     render() {
         const profile = {
@@ -135,6 +216,14 @@ export default class AccountProfile extends React.Component {
             email: this.state.profileData.email,
             phone: this.state.profileData.phone
         }
+        // const summary={
+        //     summary:this.state.profileData.summary,
+        //     description:this.state.profileData.description
+        // }
+
+        console.log('Address in AccountProfile',this.state.profileData.address)
+        console.log('LinkedIn in AccountProfile',this.state.profileData.profile)
+
         return (
             <BodyWrapper reload={this.loadData} loaderData={this.state.loaderData}>
                 <section className="page-body">
@@ -147,27 +236,33 @@ export default class AccountProfile extends React.Component {
                                             title='Linked Accounts'
                                             tooltip='Linking to online social networks adds credibility to your profile'
                                         >
-                                            <SocialMediaLinkedAccount
+                                             <SocialMediaLinkedAccount
                                                 linkedAccounts={this.state.profileData.linkedAccounts}
-                                                updateProfileData={this.updateWithoutSave}
+                                               updateProfileData={this.updateWithoutSave}
                                                 saveProfileData={this.updateAndSaveData}
-                                            />
+                                               
+                                            /> 
+                                             
+
+
                                         </FormItemWrapper>
                                         <FormItemWrapper
                                             title='User Details'
                                             tooltip='Enter your contact details'
                                         >
                                             <IndividualDetailSection
+                                               
                                                 controlFunc={this.updateForComponentId}
                                                 details={profile}
                                                 componentId='contactDetails'
+                                                handleUserInput={this.handleUserInput}
                                             />
                                         </FormItemWrapper>
                                         <FormItemWrapper
                                             title='Address'
                                             tooltip='Enter your current address'>
                                             <Address
-                                                addressData={this.state.profileData.address}
+                                                Address={this.state.profileData.address}
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveProfileData={this.updateAndSaveData}
                                             />
@@ -199,7 +294,7 @@ export default class AccountProfile extends React.Component {
                                                 updateProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
-                                        <FormItemWrapper
+                                        {/* <FormItemWrapper
                                             title='Work experience'
                                             tooltip='Add your work experience'
                                         >
@@ -207,7 +302,7 @@ export default class AccountProfile extends React.Component {
                                                 experienceData={this.state.profileData.experience}
                                                 updateProfileData={this.updateAndSaveData}
                                             />
-                                        </FormItemWrapper>
+                                        </FormItemWrapper> */}
                                         <FormItemWrapper
                                             title='Education'
                                             tooltip='Add your educational background'
@@ -237,7 +332,7 @@ export default class AccountProfile extends React.Component {
                                                 saveProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
-                                        <FormItemWrapper
+                                        {/* <FormItemWrapper
                                             title='Status'
                                             tooltip='What is your current status in jobseeking?'
                                         >
@@ -246,8 +341,8 @@ export default class AccountProfile extends React.Component {
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveProfileData={this.updateAndSaveData}
                                             />
-                                        </FormItemWrapper>
-                                        <FormItemWrapper
+                                        </FormItemWrapper> */}
+                                        {/* <FormItemWrapper
                                             title='Profile Photo'
                                             tooltip='Please upload your profile photo'
                                             hideSegment={true}
@@ -280,13 +375,20 @@ export default class AccountProfile extends React.Component {
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveCVUrl={'http://localhost:60290/profile/profile/updateTalentCV'}
                                             />
-                                        </FormItemWrapper>
-                                        <SelfIntroduction
+                                        </FormItemWrapper> */}
+                                       <FormItemWrapper
+                                            title='Self Inroduction'
+                                            tooltip='Enter summary and Description about you'
+                                           
+                                        >
+                                          <SelfIntroduction
                                             summary={this.state.profileData.summary}
                                             description={this.state.profileData.description}
+                                          
                                             updateProfileData={this.updateAndSaveData}
                                             updateWithoutSave={this.updateWithoutSave}
-                                        />
+                                        />  
+                                        </FormItemWrapper>
                                     </div>
                                 </form>
                             </div >

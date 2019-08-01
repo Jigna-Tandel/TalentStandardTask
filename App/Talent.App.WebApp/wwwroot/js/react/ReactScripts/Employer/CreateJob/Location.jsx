@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Dropdown } from 'semantic-ui-react'
 import { countries } from '../common.js'
 
+
 export class Location extends React.Component {
     constructor(props) {
         super(props)

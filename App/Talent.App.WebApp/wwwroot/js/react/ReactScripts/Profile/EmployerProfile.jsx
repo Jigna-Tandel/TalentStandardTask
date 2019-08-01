@@ -91,6 +91,7 @@ export default class EmployeeProfile extends React.Component {
 
     //updates component's state and saves data
     updateAndSaveData(newData) {
+        console.log('newData',newData)
         let newSD = Object.assign({}, this.state.employerData, newData)
         this.setState({
             employerData: newSD
@@ -152,6 +153,7 @@ export default class EmployeeProfile extends React.Component {
 
     saveData() {
 
+        console.log('EmployerData',this.state.employerData)
         var cookies = Cookies.get('talentAuthToken');
         $.ajax({
             url: 'http://localhost:60290/profile/profile/saveEmployerProfile',

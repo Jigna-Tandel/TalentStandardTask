@@ -48,11 +48,13 @@ export class IndividualDetailSection extends Component {
         this.setState({
             newContact: data
         })
+       
+       
     }
 
     saveContact() {
-        console.log(this.props.componentId)
-        console.log(this.state.newContact)
+        console.log('componentId',this.props.componentId)
+        console.log('newcontact in contact',this.state.newContact)
         const data = Object.assign({}, this.state.newContact)
         this.props.controlFunc(this.props.componentId, data)
         this.closeEdit()
