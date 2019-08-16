@@ -21,6 +21,7 @@ using Talent.Services.Profile.Domain.Contracts;
 using Talent.Common.Aws;
 using Talent.Services.Profile.Models;
 
+
 namespace Talent.Services.Profile.Controllers
 {
     [Route("profile/[controller]")]
@@ -135,18 +136,33 @@ namespace Talent.Services.Profile.Controllers
 
         [HttpGet("getLanguage")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
-        public async Task<IActionResult> GetLanguages()
+        public async Task<IActionResult> GetLanguages(String id = "")
         {
             //Your code here;
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+            String Id = String.IsNullOrWhiteSpace(id) ? _userAppContext.CurrentUserId : id;
+            var language = await _profileService.GetLanguage(Id);
+
+            return Json(new { Success = true, data = language });
         }
 
         [HttpPost("addLanguage")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
-        public ActionResult AddLanguage([FromBody] AddLanguageViewModel language)
+        public async Task<ActionResult> AddLanguage([FromBody] AddLanguageViewModel language)
         {
             //Your code here;
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+
+            if (ModelState.IsValid)
+            {
+                if (await _profileService.AddNewLanguage(language, _userAppContext.CurrentUserId))
+                {
+                    return Json(new { Success = true });
+                }
+            }
+            return Json(new { Success = false });
+
+
         }
 
         [HttpPost("updateLanguage")]

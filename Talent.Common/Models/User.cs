@@ -27,7 +27,8 @@ namespace Talent.Common.Models
         public Address Address { get; set; }
         public string Nationality { get; set; }
         public string VisaStatus { get; set; }
-        public JobSeekingStatus JobSeekingStatus { get; set; }
+       // public JobSeekingStatus JobSeekingStatus { get; set; }
+       public string JobSeekingStatus { get; set; }
         public DateTime? VisaExpiryDate { get; set; }
         public string Summary { get; set; }
         public string Description { get; set; }
@@ -96,7 +97,7 @@ namespace Talent.Common.Models
         }
     }
 
-    public class JobSeekingStatus
+    /*public class JobSeekingStatus
     {
         public string Status { get; set; }
         public DateTime? AvailableDate { get; set; }
@@ -106,5 +107,5 @@ namespace Talent.Common.Models
             Status = "";
             AvailableDate = null;
         }
-    }
+    }*/
 }

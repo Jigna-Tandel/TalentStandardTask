@@ -11,7 +11,9 @@ namespace Talent.Services.Profile.Domain.Contracts
 {
     public interface IProfileService
     {
-        bool AddNewLanguage(AddLanguageViewModel language);
+       // bool AddNewLanguage(AddLanguageViewModel language);
+        Task<AddLanguageViewModel> GetLanguage(String Id);
+       Task<bool> AddNewLanguage(AddLanguageViewModel profile, String updaterId);
 
         Task<TalentProfileViewModel> GetTalentProfile(String Id);
         Task<IEnumerable<string>> GetTalentSuggestionIds(string employerOrJobId, bool forJob, int position, int increment);
@@ -42,5 +44,6 @@ namespace Talent.Services.Profile.Domain.Contracts
 
         Task<IEnumerable<ClientViewModel>> GetClientListAsync(string recruiterId);
         Task<Employer> GetEmployer(string employerId);
+       // Task GetLanguages();
     }
 }

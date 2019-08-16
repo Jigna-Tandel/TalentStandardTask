@@ -34,8 +34,9 @@ namespace Talent.Services.Profile.Models.Profile
         public string Summary { get; set; }
         public string Description { get; set; }
         public LinkedAccounts LinkedAccounts { get; set; }
-        public JobSeekingStatus JobSeekingStatus { get; set; }
-
+      //  public JobSeekingStatus JobSeekingStatus { get; set; }
+        public string JobSeekingStatus { get; set; }
+         
         public List<AddLanguageViewModel> Languages { get; set; }
         public List<AddSkillViewModel> Skills { get; set; }
         public List<AddEducationViewModel> Education { get; set; }

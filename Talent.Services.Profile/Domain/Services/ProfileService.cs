@@ -43,10 +43,63 @@ namespace Talent.Services.Profile.Domain.Services
             _fileService = fileService;
         }
 
-        public bool AddNewLanguage(AddLanguageViewModel language)
+        /*   public bool AddNewLanguage(AddLanguageViewModel language)
+         {
+          //Your code here;
+          // throw new NotImplementedException();
+
+
+          }
+       public bool GetLanguages(AddLanguageViewModel language)
+         {
+             //Your code here;
+             throw new NotImplementedException();
+         }*/
+        public async Task<AddLanguageViewModel> GetLanguage(string Id)
         {
             //Your code here;
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            UserLanguage profile = null;
+
+            profile = (await _userLanguageRepository.GetByIdAsync(Id));
+            var result = new AddLanguageViewModel
+            {
+                Id = profile.Id,
+                Name = profile.Language,
+                Level = profile.LanguageLevel
+            };
+            return result;
+        }
+        public async Task<bool> AddNewLanguage(AddLanguageViewModel language, string updaterId)
+        {
+
+            //  UserLanguage existingUser = null;
+
+           
+
+            try
+            {
+                if (language.Id != null)
+                {
+
+                    UserLanguage existingUser = (await _userLanguageRepository.GetByIdAsync(language.Id));
+                    existingUser.Language = language.Name;
+                    existingUser.LanguageLevel = language.Level;
+                  
+
+                    await _userLanguageRepository.Update(existingUser);
+
+                    return true;
+                }
+                return false;
+            }
+            catch (MongoException e)
+            {
+                return false;
+            }
+
+
+
         }
 
         public async Task<TalentProfileViewModel> GetTalentProfile(string Id)

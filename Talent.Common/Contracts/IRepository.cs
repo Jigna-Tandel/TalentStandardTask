@@ -18,5 +18,6 @@ namespace Talent.Common.Contracts
         IQueryable<T> Collection { get; }
         IQueryable<T> GetQueryable(bool includeDeleted = false);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+      //  Task<bool> AddNewLanguage(Talent.Services.Profile.Models.Profile.AddLanguageViewModel language, string currentUserId);
     }
 }

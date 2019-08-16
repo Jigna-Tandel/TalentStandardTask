@@ -16,15 +16,15 @@ export class Address extends React.Component {
         const Address = this.props.Address ?
             Object.assign({}, this.props.Address)
             : {
-                address:{
+            //     address:{
                     
-               city: "",
-               country: "",
-                number: "",
-                postCode: 0,
-                street: "",
-                suburb: ""  
-                }
+            //    city: "",
+            //    country: "",
+            //     number: "",
+            //     postCode: 0,
+            //     street: "",
+            //     suburb: ""  
+            //     }
             }
 
         this.state = {
@@ -63,6 +63,7 @@ export class Address extends React.Component {
         this.setState({
             newAddress: data
         })
+        this.props.updateProfileData(data)
     }
 
     saveContact() {
@@ -93,12 +94,12 @@ export class Address extends React.Component {
                         }}
       this.props.saveProfileData(updateData)
       this.props.updateProfileData(updateData)
-     
+      this.closeEdit()
      
 
-      this.closeEdit()
-      console.log('props in save',this.props.Address)
-      /*this.props.saveProfileData(data)
+     
+     // console.log('props in save',this.props.Address)
+     /* this.props.saveProfileData(data)
       this.props.updateProfileData(data)
      
         this.closeEdit()*/

@@ -34,8 +34,8 @@ export default class AccountProfile extends React.Component {
                 // },
                 nationality: '',
                 education: [],
-                languages: [],
-                skills: [],
+                language: [],
+                Skills: [],
                 experience: [],
                 certifications: [],
                 visaStatus: '',
@@ -45,10 +45,11 @@ export default class AccountProfile extends React.Component {
                     linkedIn: "",
                     github: ""
                 },
-                jobSeekingStatus: {
-                    status: "",
-                    availableDate: null
-                }
+               jobSeekingStatus:''
+                // jobSeekingStatus: {
+                //     status: "",
+                //     availableDate: null
+                // }
             },
             loaderData: loaderData,
             formErrors: { name: '', email: '' },
@@ -89,6 +90,7 @@ export default class AccountProfile extends React.Component {
         var cookies = Cookies.get('talentAuthToken');
         $.ajax({
             url: 'http://localhost:60290/profile/profile/getTalentProfile',
+           // url: 'http://localhost:60290/profile/profile/getLanguage',
             headers: {
                 'Authorization': 'Bearer ' + cookies,
                 'Content-Type': 'application/json'
@@ -102,7 +104,7 @@ export default class AccountProfile extends React.Component {
     }
     //updates component's state without saving data
     updateWithoutSave(newValues) {
-       
+        debugger;
         let newProfile = Object.assign({}, this.state.profileData, newValues)
         this.setState({
             profileData: newProfile
@@ -111,7 +113,8 @@ export default class AccountProfile extends React.Component {
 
     //updates component's state and saves data
     updateAndSaveData(newValues) {
-        
+        debugger;
+        console.log('newValues:',newValues)
         let newProfile = Object.assign({}, this.state.profileData, newValues)
         this.setState({
             profileData: newProfile
@@ -128,7 +131,8 @@ export default class AccountProfile extends React.Component {
         console.log('profile',this.state.profileData)
         var cookies = Cookies.get('talentAuthToken');
         $.ajax({
-            url: 'http://localhost:60290/profile/profile/updateTalentProfile',
+         url: 'http://localhost:60290/profile/profile/updateTalentProfile',
+           // url: 'http://localhost:60290/profile/profile/addLanguage',
             headers: {
                 'Authorization': 'Bearer ' + cookies,
                 'Content-Type': 'application/json'
@@ -281,7 +285,7 @@ export default class AccountProfile extends React.Component {
                                             tooltip='Select languages that you speak'
                                         >
                                             <Language
-                                                languageData={this.state.profileData.languages}
+                                                languageData={this.state.profileData.language}
                                                 updateProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
@@ -290,7 +294,8 @@ export default class AccountProfile extends React.Component {
                                             tooltip='List your skills'
                                         >
                                             <Skill
-                                                skillData={this.state.profileData.skills}
+                                                skillData={this.state.profileData.Skills}
+                                                updateProfileData1={this.updateWithoutSave}
                                                 updateProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
@@ -332,7 +337,7 @@ export default class AccountProfile extends React.Component {
                                                 saveProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
-                                        {/* <FormItemWrapper
+                                         <FormItemWrapper
                                             title='Status'
                                             tooltip='What is your current status in jobseeking?'
                                         >
@@ -341,8 +346,8 @@ export default class AccountProfile extends React.Component {
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveProfileData={this.updateAndSaveData}
                                             />
-                                        </FormItemWrapper> */}
-                                        {/* <FormItemWrapper
+                                        </FormItemWrapper> 
+                                     {/*   <FormItemWrapper
                                             title='Profile Photo'
                                             tooltip='Please upload your profile photo'
                                             hideSegment={true}
@@ -353,7 +358,7 @@ export default class AccountProfile extends React.Component {
                                                 savePhotoUrl='http://localhost:60290/profile/profile/updateProfilePhoto'
                                             />
                                         </FormItemWrapper>
-                                        <FormItemWrapper
+                                         <FormItemWrapper
                                             title='Profile Video'
                                             tooltip='Upload a brief self-introduction video'
                                             hideSegment={true}
