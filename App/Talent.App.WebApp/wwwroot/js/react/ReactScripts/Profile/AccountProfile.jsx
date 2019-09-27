@@ -35,7 +35,7 @@ export default class AccountProfile extends React.Component {
                 nationality: '',
                 education: [],
                 language: [],
-                Skills: [],
+                skills: [],
                 experience: [],
                 certifications: [],
                 visaStatus: '',
@@ -113,7 +113,7 @@ export default class AccountProfile extends React.Component {
 
     //updates component's state and saves data
     updateAndSaveData(newValues) {
-        debugger;
+       // debugger;
         console.log('newValues:',newValues)
         let newProfile = Object.assign({}, this.state.profileData, newValues)
         this.setState({
@@ -131,8 +131,8 @@ export default class AccountProfile extends React.Component {
         console.log('profile',this.state.profileData)
         var cookies = Cookies.get('talentAuthToken');
         $.ajax({
-         url: 'http://localhost:60290/profile/profile/updateTalentProfile',
-           // url: 'http://localhost:60290/profile/profile/addLanguage',
+         //url: 'http://localhost:60290/profile/profile/updateTalentProfile',
+            url: 'http://localhost:60290/profile/profile/addLanguage',
             headers: {
                 'Authorization': 'Bearer ' + cookies,
                 'Content-Type': 'application/json'
@@ -225,8 +225,8 @@ export default class AccountProfile extends React.Component {
         //     description:this.state.profileData.description
         // }
 
-        console.log('Address in AccountProfile',this.state.profileData.address)
-        console.log('LinkedIn in AccountProfile',this.state.profileData.profile)
+        console.log('Skill in AccountProfile',this.state.profileData)
+      //  console.log('LinkedIn in AccountProfile',this.state.profileData.profile)
 
         return (
             <BodyWrapper reload={this.loadData} loaderData={this.state.loaderData}>
@@ -286,6 +286,7 @@ export default class AccountProfile extends React.Component {
                                         >
                                             <Language
                                                 languageData={this.state.profileData.language}
+                                                updateProfileData1={this.updateWithoutSave}
                                                 updateProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
@@ -294,7 +295,7 @@ export default class AccountProfile extends React.Component {
                                             tooltip='List your skills'
                                         >
                                             <Skill
-                                                skillData={this.state.profileData.Skills}
+                                                skillData={this.state.profileData.skills}
                                                 updateProfileData1={this.updateWithoutSave}
                                                 updateProfileData={this.updateAndSaveData}
                                             />

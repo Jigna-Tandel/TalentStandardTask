@@ -24,6 +24,7 @@ export default class Language extends React.Component {
     this.setState({ isAddLanguage: false });
   }
   onSave(data) {
+    this.props.updateProfileData1(data);
     this.props.updateProfileData(data);
   }
 

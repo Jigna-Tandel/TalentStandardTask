@@ -10,7 +10,8 @@ export default class LanguageAdd extends React.Component {
     const language = props.languageData
       ? Object.assign({}, props.languageData)
       : {
-          language: ""
+          Name: "",
+          level: ""
         };
     this.state = {
       language: language
@@ -37,13 +38,8 @@ export default class LanguageAdd extends React.Component {
 
   onSave() {
     const data = Object.assign({}, this.state.language);
-
-    let name1 = "Name";
-    let value1 = this.state.language;
     const updateData = {
-      language: {
-        [name1]: value1
-      }
+      Languages: [data]
     };
     this.props.onSave(updateData);
     console.log("data in language", updateData);
@@ -75,7 +71,7 @@ export default class LanguageAdd extends React.Component {
               <input
                 type="text"
                 name="Name"
-                value={this.state.language}
+                value={this.state.language.Name}
                 onChange={this.handleChange}
                 placeholder="Name"
               />
@@ -85,8 +81,8 @@ export default class LanguageAdd extends React.Component {
               <select
                 className="ui right labeled dropdown"
                 name="level"
-                // value={selectedVisaStatus}
-                //onChange={this.handleChange}
+                value={this.state.language.level}
+                onChange={this.handleChange}
               >
                 <option>Language level</option>
                 {levelOption}

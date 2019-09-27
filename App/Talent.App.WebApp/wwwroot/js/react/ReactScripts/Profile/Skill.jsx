@@ -19,20 +19,20 @@ export default class Skill extends React.Component {
       isAddskill: false
       // skillData: skillData
     };
-    this.onAddskill = this.onAddskill.bind(this);
+    this.onAddNewskill = this.onAddNewskill.bind(this);
     this.onCancel = this.onCancel.bind(this);
     this.onSave = this.onSave.bind(this);
   }
 
-  onAddskill() {
+  onAddNewskill() {
     this.setState({ isAddskill: true });
   }
   onCancel() {
     this.setState({ isAddskill: false });
   }
   onSave(data) {
-    debugger;
-    //this.props.updateProfileData1(data);
+   // debugger;
+    this.props.updateProfileData1(data);
     this.props.updateProfileData(data);
     console.log("data in skill", data);
   }
@@ -54,7 +54,7 @@ export default class Skill extends React.Component {
           </div>
           <div className="row">
             <SkillTable
-              onAddskill={this.onAddskill}
+              onAddNewskill={this.onAddNewskill}
               skillData={this.props.skillData}
             />
           </div>

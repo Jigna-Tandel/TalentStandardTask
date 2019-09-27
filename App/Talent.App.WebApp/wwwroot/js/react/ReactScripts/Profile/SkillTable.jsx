@@ -16,14 +16,17 @@ export default class SkillTable extends React.Component {
       skill: skill
     };
 
-    this.onAddskill = this.onAddskill.bind(this);
+    this.onAddNewskill = this.onAddNewskill.bind(this);
   }
 
-  onAddskill() {
-    this.props.onAddskill();
+  onAddNewskill() {
+    this.props.onAddNewskill();
   }
 
   render() {
+    console.log("props in Table:", this.props.skillData);
+    console.log("Name in props in Table:", this.props.skillData[0]);
+    // console.log("name props in Table:", this.props.skillData["name"]);
     return (
       <div className="ui sixteen wide column">
         <div className="ui grid">
@@ -39,7 +42,7 @@ export default class SkillTable extends React.Component {
                     <button
                       type="button"
                       className="ui right floated teal button"
-                      onClick={this.onAddskill}
+                      onClick={this.onAddNewskill}
                     >
                       Add New
                     </button>
@@ -47,35 +50,37 @@ export default class SkillTable extends React.Component {
                 </tr>
               </thead>
               <tbody className="ui sixteen wide column">
-                <tr>
-                  <td>ID</td>
-                  <td>Basic</td>
-                  <td>level</td>
-                  <td>
-                    <table>
-                      <tr>
-                        <td>
-                          <button
-                            type="button"
-                            className="ui right floated teal button"
-                            // onClick={this.onSave}
-                          >
-                            Edit
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="ui right floated teal button"
-                            // onClick={this.onSave}
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
+                {this.props.skillData.map(x => (
+                  <tr key={x._id}>
+                    <td>{x.id}</td>
+                    <td>{x.name}</td>
+                    <td>{x.level}</td>
+                    <td>
+                      <table>
+                        <tr>
+                          <td>
+                            <button
+                              type="button"
+                              className="ui.basic.green.button"
+                              // onClick={this.onSave}
+                            >
+                              Edit
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              className="ui.basic.green.button"
+                              // onClick={this.onSave}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

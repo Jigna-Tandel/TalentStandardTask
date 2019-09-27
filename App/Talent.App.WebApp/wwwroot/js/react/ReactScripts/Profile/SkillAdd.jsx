@@ -54,10 +54,10 @@ export default class SkillAdd extends React.Component {
     // let value1 = this.state.skill[Name];
     // let name2 = "level";
     // let value2 = this.state.skill[level];
-    // const updateData = {
-    //   Skills: [data]
-    // };
-    //this.props.onSave(updateData);
+    const updateData = {
+      Skills: [data]
+    };
+    this.props.onSave(updateData);
     // ajax call to 'profile/addSkill' and pass data
     console.log("data in language", data);
   }
@@ -69,6 +69,11 @@ export default class SkillAdd extends React.Component {
         {x}
       </option>
     ));
+    console.log("state in skillAdd", this.state.skill);
+    console.log("Name state in skillAdd", this.state.skill.Name);
+    console.log("level state in skillAdd", this.state.skill.level);
+    console.log("prop in skillAdd", this.props.skillData);
+
     return (
       <div className="ui sixteen wide column">
         <div className="ui grid">
